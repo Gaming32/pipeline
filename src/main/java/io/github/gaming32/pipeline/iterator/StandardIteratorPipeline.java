@@ -120,6 +120,26 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     }
 
     @Override
+    public boolean allMatch(Predicate<E> predicate) {
+        while (next.hasNext()) {
+            if (!predicate.test(next.next())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean anyMatch(Predicate<E> predicate) {
+        while (next.hasNext()) {
+            if (predicate.test(next.next())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         return "IteratorPipeline[" + next + "]";
     }
