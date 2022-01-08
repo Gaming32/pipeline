@@ -4,6 +4,8 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import io.github.gaming32.pipeline.iterator.IteratorPipeline;
+
 public interface UnaryPipeline<T> {
     public static <T> UnaryPipeline<T> of(T value) {
         return new StandardUnaryPipeline<>(value);
@@ -22,4 +24,6 @@ public interface UnaryPipeline<T> {
     public <R extends UnaryPipeline<RT>, RT> R choosePipeline(Predicate<T> chooser, Function<UnaryPipeline<T>, R> ifTrue, Function<UnaryPipeline<T>, R> ifFalse);
 
     public <R> UnaryPipeline<R> replace(R value);
+
+    public IteratorPipeline<T> oneElementIterator();
 }

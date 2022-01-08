@@ -1,8 +1,12 @@
 package io.github.gaming32.pipeline.unary;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
+import io.github.gaming32.pipeline.iterator.IteratorPipeline;
 
 class StandardUnaryPipeline<T> implements UnaryPipeline<T> {
     private final T value;
@@ -63,7 +67,28 @@ class StandardUnaryPipeline<T> implements UnaryPipeline<T> {
     }
 
     @Override
+    public IteratorPipeline<T> oneElementIterator() {
+        return IteratorPipeline.of(new Iterator<T>() {
+            private boolean done;
+
+            @Override
+            public boolean hasNext() {
+                return !done;
+            }
+
+            @Override
+            public T next() {
+                if (done) {
+                    throw new NoSuchElementException();
+                }
+                done = true;
+                return value;
+            }
+        });
+    }
+
+    @Override
     public String toString() {
-        return "UnaryPipeline{value=" + value + "}";
+        return "UnaryPipeline[" + value + "]";
     }
 }
