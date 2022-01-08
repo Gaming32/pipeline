@@ -2,7 +2,6 @@ package io.github.gaming32.pipeline.iterator;
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -10,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 
+import io.github.gaming32.pipeline.iterator.iterators.MultiIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
 
 public interface IteratorPipeline<E> extends Iterator<E> {
@@ -30,38 +30,10 @@ public interface IteratorPipeline<E> extends Iterator<E> {
         if (iterators.length == 0) {
             return new StandardIteratorPipeline<>(Collections.emptyIterator());
         }
-        return new StandardIteratorPipeline<>(new Iterator<E>() {
-            private int nextIndex = 1;
-            private Iterator<E> current = iterators[0];
-
-            @Override
-            public boolean hasNext() {
-                if (current.hasNext()) {
-                    return true;
-                }
-                while (nextIndex < iterators.length) {
-                    current = iterators[nextIndex++];
-                    if (current.hasNext()) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-            @Override
-            public E next() {
-                if (current.hasNext()) {
-                    return current.next();
-                }
-                while (nextIndex < iterators.length) {
-                    current = iterators[nextIndex++];
-                    if (current.hasNext()) {
-                        return current.next();
-                    }
-                }
-                throw new NoSuchElementException();
-            }
-        });
+        if (iterators.length == 1) {
+            return new StandardIteratorPipeline<>(iterators[0]);
+        }
+        return new StandardIteratorPipeline<>(new MultiIterator<>(iterators));
     }
 
     public <R> IteratorPipeline<R> map(Function<E, R> mapper);

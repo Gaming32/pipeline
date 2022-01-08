@@ -1,13 +1,14 @@
 package io.github.gaming32.pipeline.iterator;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import io.github.gaming32.pipeline.iterator.iterators.FilteringIterator;
+import io.github.gaming32.pipeline.iterator.iterators.MappingIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
 
 class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
@@ -29,16 +30,7 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
 
     @Override
     public <R> IteratorPipeline<R> map(Function<E, R> mapper) {
-        return new StandardIteratorPipeline<>(new Iterator<R>() {
-            @Override
-            public boolean hasNext() {
-                return next.hasNext();
-            }
-            @Override
-            public R next() {
-                return mapper.apply(next.next());
-            }
-        });
+        return new StandardIteratorPipeline<>(new MappingIterator<>(next, mapper));
     }
 
     @Override
@@ -48,6 +40,7 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
             public boolean hasNext() {
                 return next.hasNext();
             }
+
             @Override
             public R next() {
                 return mapper.apply(UnaryPipeline.of(next.next())).get();
@@ -57,43 +50,7 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
 
     @Override
     public IteratorPipeline<E> filter(Predicate<E> filter) {
-        return new StandardIteratorPipeline<>(new Iterator<E>() {
-            private boolean hasScanned;
-            private E scannedValue;
-
-            @Override
-            public boolean hasNext() {
-                if (!hasScanned) {
-                    scan();
-                }
-                return hasScanned;
-            }
-
-            @Override
-            public E next() {
-                if (!hasScanned) {
-                    scannedValue = null; // Allow garbage collection
-                    scan();
-                    if (!hasScanned) {
-                        // *Still* no element available
-                        throw new NoSuchElementException();
-                    }
-                }
-                hasScanned = false;
-                return scannedValue;
-            }
-
-            private void scan() {
-                while (next.hasNext()) {
-                    E value = next.next();
-                    if (filter.test(value)) {
-                        hasScanned = true;
-                        scannedValue = value;
-                        return;
-                    }
-                }
-            }
-        });
+        return new StandardIteratorPipeline<>(new FilteringIterator<>(next, filter));
     }
 
     @Override

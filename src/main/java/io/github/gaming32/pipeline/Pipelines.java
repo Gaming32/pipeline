@@ -1,11 +1,10 @@
 package io.github.gaming32.pipeline;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 
 import io.github.gaming32.pipeline.iterator.IteratorPipeline;
+import io.github.gaming32.pipeline.iterator.iterators.ArrayIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
 
 public final class Pipelines {
@@ -66,33 +65,5 @@ public final class Pipelines {
             iterators[i] = streams[i].iterator();
         }
         return IteratorPipeline.multi(iterators);
-    }
-
-    private static final class ArrayIterator<E> implements Iterator<E> {
-        private int i;
-        private E[] array;
-
-        public ArrayIterator(E[] array) {
-            this.array = array;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return i < array.length;
-        }
-
-        @Override
-        public E next() {
-            try {
-                return array[i++];
-            } catch (IndexOutOfBoundsException e) {
-                throw new NoSuchElementException();
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "ArrayIterator" + Arrays.toString(array);
-        }
     }
 }
