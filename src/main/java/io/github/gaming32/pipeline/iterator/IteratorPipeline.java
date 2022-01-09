@@ -55,4 +55,8 @@ public interface IteratorPipeline<E> extends Iterator<E> {
     public boolean allMatch(Predicate<E> predicate);
 
     public boolean anyMatch(Predicate<E> predicate);
+
+    public IteratorPipeline<E> skip(int n);
+
+    public IteratorPipeline<E> limit(int n);
 }

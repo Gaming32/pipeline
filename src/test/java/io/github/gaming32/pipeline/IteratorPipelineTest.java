@@ -21,13 +21,17 @@ public class IteratorPipelineTest {
             Pipelines.iterators(
                 new String[] {
                     "hello",
-                    "world"
+                    "world",
+                    "test"
                 },
                 new String[] {
                     "123",
-                    "456"
+                    "456",
+                    "789"
                 }
             )
+                .skip(2)
+                .limit(3)
                 .collect(Collectors.joining(", ", "[", "]"))
         );
     }
