@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.StringJoiner;
 
-public final class MultiIterator<E> implements Iterator<E> {
+public final class MultiIterator<E> implements SizeEstimateIterator<E> {
     private final Iterator<E>[] iterators;
     private int nextIndex;
     private Iterator<E> current;
@@ -42,6 +42,15 @@ public final class MultiIterator<E> implements Iterator<E> {
             }
         }
         throw new NoSuchElementException();
+    }
+
+    @Override
+    public int estimateSize() {
+        int sum = 0;
+        for (Iterator<E> it : iterators) {
+            sum += SizeEstimateIterator.estimateSize(it);
+        }
+        return sum;
     }
 
     @Override

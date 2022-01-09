@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Predicate;
 
-public final class FilteringIterator<E> implements Iterator<E> {
+public final class FilteringIterator<E> implements SizeEstimateIterator<E> {
     private final Iterator<E> wrapped;
     private final Predicate<E> filter;
     private boolean hasScanned;
@@ -46,6 +46,11 @@ public final class FilteringIterator<E> implements Iterator<E> {
                 return;
             }
         }
+    }
+
+    @Override
+    public int estimateSize() {
+        return SizeEstimateIterator.estimateSize(wrapped);
     }
 
     @Override

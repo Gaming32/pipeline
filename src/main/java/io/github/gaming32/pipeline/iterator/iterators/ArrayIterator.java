@@ -1,10 +1,9 @@
 package io.github.gaming32.pipeline.iterator.iterators;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class ArrayIterator<E> implements Iterator<E> {
+public final class ArrayIterator<E> implements SizeEstimateIterator<E> {
     private int i;
     private E[] array;
 
@@ -24,6 +23,11 @@ public final class ArrayIterator<E> implements Iterator<E> {
         } catch (IndexOutOfBoundsException e) {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public int estimateSize() {
+        return array.length;
     }
 
     @Override

@@ -2,7 +2,7 @@ package io.github.gaming32.pipeline.iterator.iterators;
 
 import java.util.Iterator;
 
-public final class SkipIterator<E> implements Iterator<E> {
+public final class SkipIterator<E> implements SizeEstimateIterator<E> {
     private final Iterator<E> wrapped;
     private final long toSkip;
     private boolean hasSkipped;
@@ -29,6 +29,11 @@ public final class SkipIterator<E> implements Iterator<E> {
             wrapped.next();
         }
         hasSkipped = true;
+    }
+
+    @Override
+    public int estimateSize() {
+        return toSkip > Integer.MAX_VALUE ? 0 : (SizeEstimateIterator.estimateSize(wrapped) - (int)toSkip);
     }
 
     @Override

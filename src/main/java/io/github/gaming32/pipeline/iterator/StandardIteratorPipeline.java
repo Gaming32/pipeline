@@ -10,6 +10,7 @@ import java.util.function.Supplier;
 import io.github.gaming32.pipeline.iterator.iterators.FilteringIterator;
 import io.github.gaming32.pipeline.iterator.iterators.LimitIterator;
 import io.github.gaming32.pipeline.iterator.iterators.MappingIterator;
+import io.github.gaming32.pipeline.iterator.iterators.SizeEstimateIterator;
 import io.github.gaming32.pipeline.iterator.iterators.SkipIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
 
@@ -94,6 +95,11 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     @Override
     public IteratorPipeline<E> limit(long n) {
         return new StandardIteratorPipeline<>(new LimitIterator<>(next, n));
+    }
+
+    @Override
+    public int estimateSize() {
+        return SizeEstimateIterator.estimateSize(next);
     }
 
     @Override

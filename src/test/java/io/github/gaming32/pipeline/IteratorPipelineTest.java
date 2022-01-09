@@ -1,5 +1,9 @@
 package io.github.gaming32.pipeline;
 
+import java.util.Arrays;
+
+import io.github.gaming32.pipeline.iterator.IteratorPipeline;
+
 public class IteratorPipelineTest {
     public static void main(String[] args) {
         // System.out.println(
@@ -15,22 +19,21 @@ public class IteratorPipelineTest {
         //         )
         //         .collect(Collectors.joining(", ", "[", "]"))
         // );
-        System.out.println(
-            Pipelines.iterators(
-                new String[] {
-                    "hello",
-                    "world",
-                    "test"
-                },
-                new String[] {
-                    "123",
-                    "456",
-                    "789"
-                }
+        IteratorPipeline<String> pipe = Pipelines.iterators(
+            Arrays.asList(
+                "hello",
+                "world",
+                "test"
+            ),
+            Arrays.asList(
+                "123",
+                "456",
+                "789"
             )
-                .skip(2)
-                .limit(3)
-                .count()
-        );
+        )
+            .skip(2)
+            .limit(3);
+        System.out.println(pipe.estimateSize());
+        System.out.println(pipe.count());
     }
 }

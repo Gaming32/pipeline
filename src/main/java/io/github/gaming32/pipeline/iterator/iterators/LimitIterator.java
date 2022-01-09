@@ -3,7 +3,7 @@ package io.github.gaming32.pipeline.iterator.iterators;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public final class LimitIterator<E> implements Iterator<E> {
+public final class LimitIterator<E> implements SizeEstimateIterator<E> {
     private final Iterator<E> wrapped;
     private final long maxElements;
     private long count;
@@ -31,6 +31,11 @@ public final class LimitIterator<E> implements Iterator<E> {
             return value;
         }
         throw new NoSuchElementException();
+    }
+
+    @Override
+    public int estimateSize() {
+        return maxElements > Integer.MAX_VALUE ? SizeEstimateIterator.estimateSize(wrapped) : Math.min((int)maxElements, SizeEstimateIterator.estimateSize(wrapped));
     }
 
     @Override

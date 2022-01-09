@@ -58,5 +58,7 @@ public interface IteratorPipeline<E> extends Iterable<E> {
 
     public IteratorPipeline<E> limit(long n);
 
+    public int estimateSize();
+
     public long count();
 }
