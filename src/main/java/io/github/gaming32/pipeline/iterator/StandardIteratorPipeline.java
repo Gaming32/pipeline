@@ -1,6 +1,8 @@
 package io.github.gaming32.pipeline.iterator;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -107,6 +109,12 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
         long n;
         for (n = 0; next.hasNext(); next.next()) n++;
         return n;
+    }
+
+    @Override
+    public IteratorPipeline<E> distinct() {
+        Set<E> encounteredBefore = new HashSet<>();
+        return filter(encounteredBefore::add);
     }
 
     @Override

@@ -61,4 +61,6 @@ public interface IteratorPipeline<E> extends Iterable<E> {
     public int estimateSize();
 
     public long count();
+
+    public IteratorPipeline<E> distinct();
 }

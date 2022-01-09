@@ -1,6 +1,6 @@
 package io.github.gaming32.pipeline;
 
-import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import io.github.gaming32.pipeline.iterator.IteratorPipeline;
 
@@ -20,20 +20,19 @@ public class IteratorPipelineTest {
         //         .collect(Collectors.joining(", ", "[", "]"))
         // );
         IteratorPipeline<String> pipe = Pipelines.iterators(
-            Arrays.asList(
+            new String[] {
                 "hello",
                 "world",
                 "test"
-            ),
-            Arrays.asList(
+            },
+            new String[] {
                 "123",
+                "test",
                 "456",
                 "789"
-            )
+            }
         )
-            .skip(2)
-            .limit(3);
-        System.out.println(pipe.estimateSize());
-        System.out.println(pipe.count());
+            .distinct();
+        System.out.println(pipe.collect(Collectors.joining(", ", "[", "]")));
     }
 }
