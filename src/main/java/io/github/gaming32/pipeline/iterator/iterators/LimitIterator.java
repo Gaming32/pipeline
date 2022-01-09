@@ -5,10 +5,10 @@ import java.util.NoSuchElementException;
 
 public final class LimitIterator<E> implements Iterator<E> {
     private final Iterator<E> wrapped;
-    private final int maxElements;
-    private int count;
+    private final long maxElements;
+    private long count;
 
-    public LimitIterator(Iterator<E> wrapped, int n) {
+    public LimitIterator(Iterator<E> wrapped, long n) {
         this.wrapped = wrapped;
         this.maxElements = n;
     }

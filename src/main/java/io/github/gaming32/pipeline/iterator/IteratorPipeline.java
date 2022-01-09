@@ -12,7 +12,7 @@ import java.util.stream.Collector;
 import io.github.gaming32.pipeline.iterator.iterators.MultiIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
 
-public interface IteratorPipeline<E> extends Iterator<E> {
+public interface IteratorPipeline<E> extends Iterable<E> {
     public static <E> IteratorPipeline<E> of(Iterator<E> iterator) {
         return new StandardIteratorPipeline<>(iterator);
     }
@@ -42,8 +42,6 @@ public interface IteratorPipeline<E> extends Iterator<E> {
 
     public IteratorPipeline<E> filter(Predicate<E> filter);
 
-    public void forEach(Consumer<E> consumer);
-
     public void pipelineForEach(Consumer<UnaryPipeline<E>> consumer);
 
     public <A, R> R collect(Supplier<A> supplier, BiConsumer<A, ? super E> accumulator, Function<A, R> finisher);
@@ -56,7 +54,9 @@ public interface IteratorPipeline<E> extends Iterator<E> {
 
     public boolean anyMatch(Predicate<E> predicate);
 
-    public IteratorPipeline<E> skip(int n);
+    public IteratorPipeline<E> skip(long n);
 
-    public IteratorPipeline<E> limit(int n);
+    public IteratorPipeline<E> limit(long n);
+
+    public long count();
 }

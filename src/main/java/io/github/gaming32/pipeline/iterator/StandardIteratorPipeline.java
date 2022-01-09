@@ -21,13 +21,8 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     }
 
     @Override
-    public boolean hasNext() {
-        return next.hasNext();
-    }
-
-    @Override
-    public E next() {
-        return next.next();
+    public Iterator<E> iterator() {
+        return next;
     }
 
     @Override
@@ -53,13 +48,6 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     @Override
     public IteratorPipeline<E> filter(Predicate<E> filter) {
         return new StandardIteratorPipeline<>(new FilteringIterator<>(next, filter));
-    }
-
-    @Override
-    public void forEach(Consumer<E> consumer) {
-        while (next.hasNext()) {
-            consumer.accept(next.next());
-        }
     }
 
     @Override
@@ -99,13 +87,20 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     }
 
     @Override
-    public IteratorPipeline<E> skip(int n) {
+    public IteratorPipeline<E> skip(long n) {
         return new StandardIteratorPipeline<>(new SkipIterator<>(next, n));
     }
 
     @Override
-    public IteratorPipeline<E> limit(int n) {
+    public IteratorPipeline<E> limit(long n) {
         return new StandardIteratorPipeline<>(new LimitIterator<>(next, n));
+    }
+
+    @Override
+    public long count() {
+        long n;
+        for (n = 0; next.hasNext(); next.next()) n++;
+        return n;
     }
 
     @Override

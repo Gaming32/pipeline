@@ -4,10 +4,10 @@ import java.util.Iterator;
 
 public final class SkipIterator<E> implements Iterator<E> {
     private final Iterator<E> wrapped;
-    private final int toSkip;
+    private final long toSkip;
     private boolean hasSkipped;
 
-    public SkipIterator(Iterator<E> wrapped, int n) {
+    public SkipIterator(Iterator<E> wrapped, long n) {
         this.wrapped = wrapped;
         this.toSkip = n;
     }
@@ -25,7 +25,7 @@ public final class SkipIterator<E> implements Iterator<E> {
     }
 
     private void performSkip() {
-        for (int i = 0; i < toSkip && wrapped.hasNext(); i++) {
+        for (long i = 0; i < toSkip && wrapped.hasNext(); i++) {
             wrapped.next();
         }
         hasSkipped = true;

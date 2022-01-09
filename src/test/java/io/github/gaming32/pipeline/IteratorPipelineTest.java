@@ -1,7 +1,5 @@
 package io.github.gaming32.pipeline;
 
-import java.util.stream.Collectors;
-
 public class IteratorPipelineTest {
     public static void main(String[] args) {
         // System.out.println(
@@ -32,7 +30,7 @@ public class IteratorPipelineTest {
             )
                 .skip(2)
                 .limit(3)
-                .collect(Collectors.joining(", ", "[", "]"))
+                .count()
         );
     }
 }
