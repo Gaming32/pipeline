@@ -91,6 +91,16 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     }
 
     @Override
+    public boolean noneMatch(Predicate<E> predicate) {
+        while (next.hasNext()) {
+            if (predicate.test(next.next())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
     public IteratorPipeline<E> skip(long n) {
         return new StandardIteratorPipeline<>(new SkipIterator<>(next, n));
     }
