@@ -67,4 +67,6 @@ public interface IteratorPipeline<E> extends Iterable<E> {
     public IteratorPipeline<E> distinct();
 
     public <R> IteratorPipeline<R> flatMap(Function<? super E, ? extends Iterator<R>> mapper);
+
+    public IteratorPipeline<E> peek(Consumer<E> action);
 }

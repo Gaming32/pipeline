@@ -56,4 +56,9 @@ public final class FlatMappingIterator<E, R> implements SizeEstimateIterator<R> 
     public int estimateSize() {
         return -1;
     }
+
+    @Override
+    public String toString() {
+        return "FlatMappingIterator{parent=" + wrapped + ", mapper=" + mapper + "}";
+    }
 }

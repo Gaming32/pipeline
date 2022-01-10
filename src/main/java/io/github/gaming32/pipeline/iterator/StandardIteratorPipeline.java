@@ -13,6 +13,7 @@ import io.github.gaming32.pipeline.iterator.iterators.FilteringIterator;
 import io.github.gaming32.pipeline.iterator.iterators.FlatMappingIterator;
 import io.github.gaming32.pipeline.iterator.iterators.LimitIterator;
 import io.github.gaming32.pipeline.iterator.iterators.MappingIterator;
+import io.github.gaming32.pipeline.iterator.iterators.PeekingIterator;
 import io.github.gaming32.pipeline.iterator.iterators.SizeEstimateIterator;
 import io.github.gaming32.pipeline.iterator.iterators.SkipIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
@@ -131,6 +132,11 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     @Override
     public <R> IteratorPipeline<R> flatMap(Function<? super E, ? extends Iterator<R>> mapper) {
         return new StandardIteratorPipeline<>(new FlatMappingIterator<>(next, mapper));
+    }
+
+    @Override
+    public IteratorPipeline<E> peek(Consumer<E> action) {
+        return new StandardIteratorPipeline<>(new PeekingIterator<>(next, action));
     }
 
     @Override
