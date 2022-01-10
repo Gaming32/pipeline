@@ -3,6 +3,7 @@ package io.github.gaming32.pipeline;
 import java.util.stream.Collectors;
 
 import io.github.gaming32.pipeline.iterator.IteratorPipeline;
+import io.github.gaming32.pipeline.iterator.iterators.ArrayIterator;
 
 public class IteratorPipelineTest {
     public static void main(String[] args) {
@@ -19,7 +20,7 @@ public class IteratorPipelineTest {
         //         )
         //         .collect(Collectors.joining(", ", "[", "]"))
         // );
-        IteratorPipeline<String> pipe = Pipelines.iterators(
+        IteratorPipeline<Character> pipe = Pipelines.iterators(
             new String[] {
                 "hello",
                 "world",
@@ -27,12 +28,22 @@ public class IteratorPipelineTest {
             },
             new String[] {
                 "123",
-                "test",
                 "456",
                 "789"
             }
         )
-            .distinct();
-        System.out.println(pipe.collect(Collectors.joining(", ", "[", "]")));
+            .flatMap((s) -> {
+                char[] in = s.toCharArray();
+                Character[] out = new Character[in.length + 1];
+                for (int i = 0; i < in.length; i++) {
+                    out[i] = in[i];
+                }
+                out[in.length] = ' ';
+                return new ArrayIterator<>(out);
+            });
+        System.out.println(
+            pipe.map(c -> c.toString())
+                .collect(Collectors.joining(""))
+        );
     }
 }

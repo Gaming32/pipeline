@@ -10,6 +10,7 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import io.github.gaming32.pipeline.iterator.iterators.FilteringIterator;
+import io.github.gaming32.pipeline.iterator.iterators.FlatMappingIterator;
 import io.github.gaming32.pipeline.iterator.iterators.LimitIterator;
 import io.github.gaming32.pipeline.iterator.iterators.MappingIterator;
 import io.github.gaming32.pipeline.iterator.iterators.SizeEstimateIterator;
@@ -115,6 +116,11 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     public IteratorPipeline<E> distinct() {
         Set<E> encounteredBefore = new HashSet<>();
         return filter(encounteredBefore::add);
+    }
+
+    @Override
+    public <R> IteratorPipeline<R> flatMap(Function<? super E, ? extends Iterator<R>> mapper) {
+        return new StandardIteratorPipeline<>(new FlatMappingIterator<>(next, mapper));
     }
 
     @Override

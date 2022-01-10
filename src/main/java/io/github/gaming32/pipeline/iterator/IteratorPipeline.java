@@ -63,4 +63,6 @@ public interface IteratorPipeline<E> extends Iterable<E> {
     public long count();
 
     public IteratorPipeline<E> distinct();
+
+    public <R> IteratorPipeline<R> flatMap(Function<? super E, ? extends Iterator<R>> mapper);
 }
