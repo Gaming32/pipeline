@@ -1,7 +1,9 @@
 package io.github.gaming32.pipeline.iterator;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -137,6 +139,14 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
     @Override
     public IteratorPipeline<E> peek(Consumer<E> action) {
         return new StandardIteratorPipeline<>(new PeekingIterator<>(next, action));
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public E[] toArray(int sizeEstimate) {
+        List<E> result = new ArrayList<>(sizeEstimate);
+        forEach(result::add);
+        return (E[])result.toArray();
     }
 
     @Override

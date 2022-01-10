@@ -69,4 +69,10 @@ public interface IteratorPipeline<E> extends Iterable<E> {
     public <R> IteratorPipeline<R> flatMap(Function<? super E, ? extends Iterator<R>> mapper);
 
     public IteratorPipeline<E> peek(Consumer<E> action);
+
+    public E[] toArray(int sizeEstimate);
+
+    default public E[] toArray() {
+        return toArray(Math.max(estimateSize(), 0));
+    }
 }
