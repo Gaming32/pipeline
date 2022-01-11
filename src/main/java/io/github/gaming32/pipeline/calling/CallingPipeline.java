@@ -2,6 +2,8 @@ package io.github.gaming32.pipeline.calling;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 
 public interface CallingPipeline<V> {
     @FunctionalInterface
@@ -47,4 +49,8 @@ public interface CallingPipeline<V> {
     public <R> CallingPipeline<R> then(OneArgCallable<V, R> handler);
 
     public CallingPipeline<V> thenPassive(OneArgNoReturnCallable<V> handler);
+
+    public CallingPipeline<V> ifExceptional(BiPredicate<Exception, Object> handler);
+
+    public CallingPipeline<V> ifExceptionalPassive(BiConsumer<Exception, Object> handler);
 }

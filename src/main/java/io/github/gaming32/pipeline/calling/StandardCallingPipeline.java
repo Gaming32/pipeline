@@ -7,11 +7,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 
 class StandardCallingPipeline<V> implements CallingPipeline<V> {
     private static final ExecutorService DEFAULT_EXECUTOR = ForkJoinPool.commonPool();
 
     private final OneArgCallable<?, ?>[] parents;
+    private BiPredicate<Exception, Object>[] exceptionalHandlers;
     private final OneArgCallable<?, V> func;
     private CallingState state = CallingState.NOT_YET;
     private ExecutorService executor = null;
@@ -20,8 +23,10 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
     private Exception exception;
     private V result;
 
+    @SuppressWarnings("unchecked")
     public StandardCallingPipeline(Callable<V> func) {
         this.parents = new OneArgCallable[0];
+        this.exceptionalHandlers = new BiPredicate[0];
         this.func = new OneArgCallable<Object,V>() {
             @Override
             public V call(Object ignored) throws Exception {
@@ -34,6 +39,7 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
         this.executor = previous.executor;
         this.parents = Arrays.copyOf(previous.parents, previous.parents.length + 1);
         this.parents[previous.parents.length] = previous.func;
+        this.exceptionalHandlers = previous.exceptionalHandlers;
         this.func = func;
     }
 
@@ -46,10 +52,19 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
     @SuppressWarnings("unchecked")
     private V execute() throws Exception {
         Object value = null;
-        for (OneArgCallable<?, ?> parent : parents) {
-            value = ((OneArgCallable<Object, Object>)parent).call(value);
+        try {
+            for (OneArgCallable<?, ?> parent : parents) {
+                value = ((OneArgCallable<Object, Object>)parent).call(value);
+            }
+            return ((OneArgCallable<Object, V>)func).call(value);
+        } catch (Exception e) {
+            for (BiPredicate<Exception, Object> handler : exceptionalHandlers) {
+                if (handler.test(e, value)) {
+                    break;
+                }
+            }
+            throw e;
         }
-        return ((OneArgCallable<Object, V>)func).call(value);
     }
 
     @Override
@@ -150,5 +165,28 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
                 return arg;
             }
         });
+    }
+
+    private void addExceptionHandler(BiPredicate<Exception, Object> handler) {
+        exceptionalHandlers = Arrays.copyOf(exceptionalHandlers, exceptionalHandlers.length + 1);
+        exceptionalHandlers[exceptionalHandlers.length - 1] = handler;
+    }
+
+    @Override
+    public CallingPipeline<V> ifExceptional(BiPredicate<Exception, Object> handler) {
+        addExceptionHandler(handler);
+        return this;
+    }
+
+    @Override
+    public CallingPipeline<V> ifExceptionalPassive(BiConsumer<Exception, Object> handler) {
+        addExceptionHandler(new BiPredicate<Exception, Object>() {
+            @Override
+            public boolean test(Exception e, Object value) {
+                handler.accept(e, value);
+                return false;
+            }
+        });
+        return this;
     }
 }
