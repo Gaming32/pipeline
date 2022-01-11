@@ -6,9 +6,10 @@ public class CallingPipelineTest {
     public static void main(String[] args) throws Exception {
         System.out.println(
             Pipelines.call(CallingPipelineTest::getString)
-                .withDefaultExecutor()
+                // .withDefaultExecutor()
                 .then(String::trim)
                 .then(String::toUpperCase)
+                .thenPassive(System.out::println)
                 .then(String::toCharArray)
                 .then(Arrays::toString)
                 .get()

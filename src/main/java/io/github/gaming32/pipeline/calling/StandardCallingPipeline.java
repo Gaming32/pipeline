@@ -140,4 +140,15 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
     public <R> CallingPipeline<R> then(OneArgCallable<V, R> handler) {
         return new StandardCallingPipeline<>(this, handler);
     }
+
+    @Override
+    public CallingPipeline<V> thenPassive(OneArgNoReturnCallable<V> handler) {
+        return new StandardCallingPipeline<>(this, new OneArgCallable<V, V>() {
+            @Override
+            public V call(V arg) throws Exception {
+                handler.call(arg);
+                return arg;
+            }
+        });
+    }
 }

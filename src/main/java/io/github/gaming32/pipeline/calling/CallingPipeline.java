@@ -9,6 +9,11 @@ public interface CallingPipeline<V> {
         public R call(V arg) throws Exception;
     }
 
+    @FunctionalInterface
+    public static interface OneArgNoReturnCallable<V> {
+        public void call(V arg) throws Exception;
+    }
+
     public static enum CallingState {
         NOT_YET,
         WAITING,
@@ -40,4 +45,6 @@ public interface CallingPipeline<V> {
     public V getUnchecked();
 
     public <R> CallingPipeline<R> then(OneArgCallable<V, R> handler);
+
+    public CallingPipeline<V> thenPassive(OneArgNoReturnCallable<V> handler);
 }
