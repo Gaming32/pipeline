@@ -1,8 +1,10 @@
 package io.github.gaming32.pipeline;
 
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
+import io.github.gaming32.pipeline.calling.CallingPipeline;
 import io.github.gaming32.pipeline.iterator.IteratorPipeline;
 import io.github.gaming32.pipeline.iterator.iterators.ArrayIterator;
 import io.github.gaming32.pipeline.unary.UnaryPipeline;
@@ -14,6 +16,10 @@ public final class Pipelines {
 
     public static <T> UnaryPipeline<T> unary(T value) {
         return UnaryPipeline.of(value);
+    }
+
+    public static <V> CallingPipeline<V> call(Callable<V> func) {
+        return CallingPipeline.of(func);
     }
 
     public static <E> IteratorPipeline<E> iterator(Iterator<E> iterator) {
