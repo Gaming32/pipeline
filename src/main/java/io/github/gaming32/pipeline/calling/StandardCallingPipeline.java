@@ -107,6 +107,7 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
         if (state == CallingState.WAITING) {
             try {
                 result = waitingFuture.get();
+                state = CallingState.DONE;
             } catch (CancellationException e) {
                 state = CallingState.CANCELLED;
             } catch (ExecutionException e) {
@@ -122,7 +123,8 @@ class StandardCallingPipeline<V> implements CallingPipeline<V> {
 
     @Override
     public CallingState getState() {
-        if (state == CallingState.WAITING) {
+        if (state == CallingState.WAITING && waitingFuture.isDone()) {
+            // Set proper done state: DONE, CANCELLED, or EXCEPTIONAL
             join();
         }
         return state;
