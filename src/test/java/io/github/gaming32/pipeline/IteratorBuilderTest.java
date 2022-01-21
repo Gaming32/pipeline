@@ -24,10 +24,33 @@ public class IteratorBuilderTest implements Iterable<String> {
         // .end().iterator();
     }
 
+    @SafeVarargs
+    public static <T> Iterator<T> concat(Iterator<T>... iterators) {
+        class State {
+            Iterator<T> current;
+            T currentValue;
+        }
+        State state = new State();
+        return IteratorBuilder.<T>create()
+            .forEach(it -> state.current = it, () -> iterators)
+                .forEach(v -> state.currentValue = v, () -> state.current)
+                    .yield(() -> state.currentValue)
+                .end()
+            .end()
+        .end().iterator();
+    }
+
     public static void main(String[] args) {
+        // System.out.println(
+        //     IteratorPipeline.of(new IteratorBuilderTest())
+        //         .collect(Collectors.joining(", ", "[", "]"))
+        // );
         System.out.println(
-            IteratorPipeline.of(new IteratorBuilderTest())
-                .collect(Collectors.joining(", ", "[", "]"))
+            IteratorPipeline.of(concat(
+                new IteratorBuilderTest().iterator(),
+                new IteratorBuilderTest().iterator()
+            ))
+            .collect(Collectors.joining(", ", "[", "]"))
         );
     }
 }

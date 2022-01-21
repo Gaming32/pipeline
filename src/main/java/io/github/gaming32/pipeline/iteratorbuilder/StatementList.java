@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 class StatementList<E> implements IteratorBuilder<E> {
@@ -25,6 +26,13 @@ class StatementList<E> implements IteratorBuilder<E> {
     public IteratorBuilder<E> for_(Runnable initializer, BooleanSupplier condition, Runnable increment) {
         StatementList<E> child = new StatementList<>(this);
         children.add(new ForStatement<>(initializer, condition, increment, child));
+        return child;
+    }
+
+    @Override
+    public <T> IteratorBuilder<E> forEach(Consumer<T> action, Iterable<T> iterator) {
+        StatementList<E> child = new StatementList<>(this);
+        children.add(new ForEachStatement<>(action, iterator, child));
         return child;
     }
 

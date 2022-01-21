@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 class BuiltIterator<E> implements Iterator<E> {
+    private final List<Object> valueStack;
     private final List<Statement<E>> statementStack;
     private final List<Integer> branchStack;
     private int branchPos;
@@ -15,6 +16,7 @@ class BuiltIterator<E> implements Iterator<E> {
     private E nextValue;
 
     public BuiltIterator(StatementList<E> root) {
+        valueStack = new ArrayList<>();
         statementStack = new ArrayList<>();
         statementStack.add(null); // Marker
         branchStack = new ArrayList<>();
@@ -41,6 +43,16 @@ class BuiltIterator<E> implements Iterator<E> {
         }
         hasNextValue = false;
         return nextValue;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T valueStackPeek() {
+        return (T)valueStack.get(valueStack.size() - 1);
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> T valueStackPop() {
+        return (T)valueStack.remove(valueStack.size() - 1);
     }
 
     private Statement<E> statementStackPeek() {
@@ -74,6 +86,18 @@ class BuiltIterator<E> implements Iterator<E> {
                     branchPos = 0;
                     tree = forStmt.children;
                     forStmt.initializer.run();
+                } else if (stmt instanceof ForEachStatement) {
+                    @SuppressWarnings("unchecked")
+                    ForEachStatement<E,?> forEachStmt = (ForEachStatement<E,?>)stmt;
+                    Iterator<?> iterator = forEachStmt.iterator.iterator();
+                    if (iterator.hasNext()) {
+                        statementStack.add(stmt);
+                        branchStack.add(branchPos);
+                        branchPos = 0;
+                        tree = forEachStmt.children;
+                        valueStack.add(iterator);
+                        forEachStmt.accept(iterator);
+                    }
                 } else if (stmt instanceof WhileStatement) {
                     WhileStatement<E> whileStmt = (WhileStatement<E>)stmt;
                     statementStack.add(stmt);
@@ -90,6 +114,23 @@ class BuiltIterator<E> implements Iterator<E> {
                     if (forStmt.condition.getAsBoolean()) {
                         branchPos = 0;
                     } else {
+                        statementStackPop();
+                        if (tree.parent != null) {
+                            branchPos = branchStackPop();
+                            tree = tree.parent;
+                        } else {
+                            break;
+                        }
+                    }
+                } else if (parentStatement instanceof ForEachStatement) {
+                    @SuppressWarnings("unchecked")
+                    ForEachStatement<E,?> forEachStmt = (ForEachStatement<E,?>)parentStatement;
+                    Iterator<?> iterator = valueStackPeek();
+                    if (iterator.hasNext()) {
+                        forEachStmt.accept(iterator);
+                        branchPos = 0;
+                    } else {
+                        valueStackPop();
                         statementStackPop();
                         if (tree.parent != null) {
                             branchPos = branchStackPop();
