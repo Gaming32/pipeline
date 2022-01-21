@@ -29,4 +29,28 @@ public interface IteratorBuilder<E> extends Iterable<E> {
     default public <T> IteratorBuilder<E> forEach(Consumer<T> action, ArraySupplier<T> array) {
         return forEach(action, () -> new ArrayIterator<>(array.get()));
     }
+
+    @SuppressWarnings("unchecked")
+    default public IteratorBuilder<E> yieldFrom(Iterable<E> iterator) {
+        Object[] current = new Object[1];
+        return forEach(e -> current[0] = e, iterator)
+            .yield(() -> (E)current[0])
+        .end();
+    }
+
+    @SuppressWarnings("unchecked")
+    default public IteratorBuilder<E> yieldFrom(Supplier<Iterable<E>> iterable) {
+        Object[] current = new Object[1];
+        return forEach(e -> current[0] = e, iterable)
+            .yield(() -> (E)current[0])
+        .end();
+    }
+
+    @SuppressWarnings("unchecked")
+    default public IteratorBuilder<E> yieldFrom(ArraySupplier<E> array) {
+        Object[] current = new Object[1];
+        return forEach(e -> current[0] = e, array)
+            .yield(() -> (E)current[0])
+        .end();
+    }
 }

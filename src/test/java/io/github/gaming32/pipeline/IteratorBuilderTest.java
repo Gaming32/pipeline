@@ -28,14 +28,11 @@ public class IteratorBuilderTest implements Iterable<String> {
     public static <T> Iterator<T> concat(Iterator<T>... iterators) {
         class State {
             Iterator<T> current;
-            T currentValue;
         }
         State state = new State();
         return IteratorBuilder.<T>create()
             .forEach(it -> state.current = it, () -> iterators)
-                .forEach(v -> state.currentValue = v, () -> state.current)
-                    .yield(() -> state.currentValue)
-                .end()
+                .yieldFrom(() -> state.current)
             .end()
         .end().iterator();
     }
