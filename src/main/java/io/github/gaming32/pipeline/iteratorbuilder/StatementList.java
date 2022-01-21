@@ -29,6 +29,13 @@ class StatementList<E> implements IteratorBuilder<E> {
     }
 
     @Override
+    public IteratorBuilder<E> while_(BooleanSupplier condition) {
+        StatementList<E> child = new StatementList<>(this);
+        children.add(new WhileStatement<>(condition, child));
+        return child;
+    }
+
+    @Override
     public IteratorBuilder<E> yield(Supplier<E> result) {
         children.add(new YieldStatement<>(result));
         return this;

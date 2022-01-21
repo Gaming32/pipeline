@@ -14,8 +14,8 @@ public class IteratorBuilderTest implements Iterable<String> {
         }
         State state = new State();
         return IteratorBuilder.<String>create()
-            .for_(() -> state.i = 0, () -> state.i < 5, () -> state.i++)
-                .yield(() -> Integer.toString(state.i))
+            .while_(() -> state.i < 5)
+                .yield(() -> Integer.toString(state.i++))
             .end()
         .end().iterator();
         // return IteratorBuilder.<String>create()

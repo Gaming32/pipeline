@@ -74,6 +74,12 @@ class BuiltIterator<E> implements Iterator<E> {
                     branchPos = 0;
                     tree = forStmt.children;
                     forStmt.initializer.run();
+                } else if (stmt instanceof WhileStatement) {
+                    WhileStatement<E> whileStmt = (WhileStatement<E>)stmt;
+                    statementStack.add(stmt);
+                    branchStack.add(branchPos);
+                    branchPos = 0;
+                    tree = whileStmt.children;
                 }
             }
             Statement<E> parentStatement;
@@ -82,6 +88,19 @@ class BuiltIterator<E> implements Iterator<E> {
                     ForStatement<E> forStmt = (ForStatement<E>)parentStatement;
                     forStmt.increment.run();
                     if (forStmt.condition.getAsBoolean()) {
+                        branchPos = 0;
+                    } else {
+                        statementStackPop();
+                        if (tree.parent != null) {
+                            branchPos = branchStackPop();
+                            tree = tree.parent;
+                        } else {
+                            break;
+                        }
+                    }
+                } else if (parentStatement instanceof WhileStatement) {
+                    WhileStatement<E> whileStmt = (WhileStatement<E>)parentStatement;
+                    if (whileStmt.condition.getAsBoolean()) {
                         branchPos = 0;
                     } else {
                         statementStackPop();

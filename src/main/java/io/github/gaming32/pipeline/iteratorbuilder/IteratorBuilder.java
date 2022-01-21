@@ -9,6 +9,7 @@ public interface IteratorBuilder<E> extends Iterable<E> {
     }
 
     public IteratorBuilder<E> for_(Runnable initializer, BooleanSupplier condition, Runnable increment);
+    public IteratorBuilder<E> while_(BooleanSupplier condition);
     public IteratorBuilder<E> yield(Supplier<E> result);
     public IteratorBuilder<E> end();
 }
