@@ -16,6 +16,7 @@ public interface IteratorBuilder<E> extends Iterable<E> {
         return new StatementList<>();
     }
 
+    public IteratorBuilder<E> run(Runnable func);
     public IteratorBuilder<E> for_(Runnable initializer, BooleanSupplier condition, Runnable increment);
     public <T> IteratorBuilder<E> forEach(Consumer<T> action, Iterable<T> iterator);
     public IteratorBuilder<E> while_(BooleanSupplier condition);

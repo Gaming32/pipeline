@@ -23,6 +23,12 @@ class StatementList<E> implements IteratorBuilder<E> {
     }
 
     @Override
+    public IteratorBuilder<E> run(Runnable func) {
+        children.add(new RunStatement<>(func));
+        return this;
+    }
+
+    @Override
     public IteratorBuilder<E> for_(Runnable initializer, BooleanSupplier condition, Runnable increment) {
         StatementList<E> child = new StatementList<>(this);
         children.add(new ForStatement<>(initializer, condition, increment, child));

@@ -75,7 +75,9 @@ class BuiltIterator<E> implements Iterator<E> {
         while (true) {
             while (branchPos < tree.children.size()) {
                 Statement<E> stmt = tree.children.get(branchPos++);
-                if (stmt instanceof YieldStatement) {
+                if (stmt instanceof RunStatement) {
+                    ((RunStatement<E>)stmt).func.run();
+                } else if (stmt instanceof YieldStatement) {
                     hasNextValue = true;
                     nextValue = ((YieldStatement<E>)stmt).result.get();
                     return;
