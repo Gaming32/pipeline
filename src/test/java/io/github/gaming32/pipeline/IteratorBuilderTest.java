@@ -32,6 +32,7 @@ public class IteratorBuilderTest implements Iterable<String> {
         State state = new State();
         return IteratorBuilder.<T>create()
             .forEach(it -> state.current = it, () -> iterators)
+                .run(() -> System.out.println(state.current))
                 .yieldFrom(() -> state.current)
             .end()
         .end().iterator();
