@@ -101,7 +101,7 @@ class BuiltIterator<E> implements Iterator<E> {
                         branchPos = 0;
                         tree = ifStmt.ifTrue;
                     } else if (ifStmt.ifFalse != null) {
-                        // There's an if statement
+                        // There's an else statement
                         branchStack.add(branchPos);
                         branchPos = 0;
                         tree = ifStmt.ifFalse;
@@ -110,18 +110,15 @@ class BuiltIterator<E> implements Iterator<E> {
             }
             Statement<E> parentStatement;
             if ((parentStatement = tree.parentStatement) != null) {
+                assert tree.parent != null;
                 if (parentStatement instanceof ForStatement) {
                     ForStatement<E> forStmt = (ForStatement<E>)parentStatement;
                     forStmt.increment.run();
                     if (forStmt.condition.getAsBoolean()) {
                         branchPos = 0;
                     } else {
-                        if (tree.parent != null) {
-                            branchPos = branchStackPop();
-                            tree = tree.parent;
-                        } else {
-                            break;
-                        }
+                        branchPos = branchStackPop();
+                        tree = tree.parent;
                     }
                 } else if (parentStatement instanceof ForEachStatement) {
                     @SuppressWarnings("unchecked")
@@ -132,33 +129,23 @@ class BuiltIterator<E> implements Iterator<E> {
                         branchPos = 0;
                     } else {
                         valueStackPop();
-                        if (tree.parent != null) {
-                            branchPos = branchStackPop();
-                            tree = tree.parent;
-                        } else {
-                            break;
-                        }
+                        branchPos = branchStackPop();
+                        tree = tree.parent;
                     }
                 } else if (parentStatement instanceof WhileStatement) {
                     WhileStatement<E> whileStmt = (WhileStatement<E>)parentStatement;
                     if (whileStmt.condition.getAsBoolean()) {
                         branchPos = 0;
                     } else {
-                        if (tree.parent != null) {
-                            branchPos = branchStackPop();
-                            tree = tree.parent;
-                        } else {
-                            break;
-                        }
+                        branchPos = branchStackPop();
+                        tree = tree.parent;
                     }
-                }
-            } else {
-                if (tree.parent != null) {
+                } else {
                     branchPos = branchStackPop();
                     tree = tree.parent;
-                } else {
-                    break;
                 }
+            } else {
+                break;
             }
         }
         hasNextValue = false;

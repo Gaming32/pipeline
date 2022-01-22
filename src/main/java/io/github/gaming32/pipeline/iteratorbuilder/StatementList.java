@@ -65,9 +65,19 @@ class StatementList<E> implements IteratorBuilder<E> {
         StatementList<E> child = new StatementList<>(this);
         Statement<E> childStatement = new IfStatement<>(condition, child);
         children.add(childStatement);
-        // If I don't set a parent statement, no checks are performed,
-        // and the child just returns immediately to its parent StatementList
-        return child;
+        return child.setParentStatement(childStatement);
+    }
+
+    @Override
+    public IteratorBuilder<E> else_() {
+        if (parentStatement == null || !(parentStatement instanceof IfStatement)) {
+            throw new IllegalStateException("else statement must directly follow if statement (no end())");
+        }
+        assert parent != null;
+        StatementList<E> elseBranch = new StatementList<>(parent); // Same parent
+        elseBranch.setParentStatement(parentStatement);
+        ((IfStatement<E>)parentStatement).ifFalse = elseBranch;
+        return elseBranch;
     }
 
     @Override

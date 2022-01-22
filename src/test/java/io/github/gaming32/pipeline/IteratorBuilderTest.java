@@ -10,13 +10,15 @@ public class IteratorBuilderTest implements Iterable<String> {
     @Override
     public Iterator<String> iterator() {
         class State {
-            int i = -1;
+            int i = 0;
         }
         State state = new State();
         return IteratorBuilder.<String>create()
             .while_(() -> state.i < 5)
-                .if_(() -> ++state.i != 2)
-                    .yield(() -> Integer.toString(state.i))
+                .if_(() -> state.i != 2)
+                    .yield(() -> Integer.toString(state.i++))
+                .else_()
+                    .run(() -> state.i++)
                 .end()
             .end()
         .end().iterator();
@@ -41,16 +43,16 @@ public class IteratorBuilderTest implements Iterable<String> {
     }
 
     public static void main(String[] args) {
-        // System.out.println(
-        //     IteratorPipeline.of(new IteratorBuilderTest())
-        //         .collect(Collectors.joining(", ", "[", "]"))
-        // );
         System.out.println(
-            IteratorPipeline.of(concat(
-                new IteratorBuilderTest().iterator(),
-                new IteratorBuilderTest().iterator()
-            ))
-            .collect(Collectors.joining(", ", "[", "]"))
+            IteratorPipeline.of(new IteratorBuilderTest())
+                .collect(Collectors.joining(", ", "[", "]"))
         );
+        // System.out.println(
+        //     IteratorPipeline.of(concat(
+        //         new IteratorBuilderTest().iterator(),
+        //         new IteratorBuilderTest().iterator()
+        //     ))
+        //     .collect(Collectors.joining(", ", "[", "]"))
+        // );
     }
 }
