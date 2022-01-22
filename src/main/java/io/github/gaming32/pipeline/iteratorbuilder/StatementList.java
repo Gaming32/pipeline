@@ -69,6 +69,18 @@ class StatementList<E> implements IteratorBuilder<E> {
     }
 
     @Override
+    public IteratorBuilder<E> elseIf(BooleanSupplier condition) {
+        if (parentStatement == null || !(parentStatement instanceof IfStatement)) {
+            throw new IllegalStateException("else statement must directly follow if statement (no end())");
+        }
+        assert parent != null;
+        StatementList<E> elseIfBranch = new StatementList<>(parent); // Same parent
+        elseIfBranch.setParentStatement(parentStatement);
+        ((IfStatement<E>)parentStatement).otherOptions.add(new IfStatement.ConditionStatementListPair<>(condition, elseIfBranch));
+        return elseIfBranch;
+    }
+
+    @Override
     public IteratorBuilder<E> else_() {
         if (parentStatement == null || !(parentStatement instanceof IfStatement)) {
             throw new IllegalStateException("else statement must directly follow if statement (no end())");

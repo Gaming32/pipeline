@@ -100,11 +100,28 @@ class BuiltIterator<E> implements Iterator<E> {
                         branchStack.add(branchPos);
                         branchPos = 0;
                         tree = ifStmt.ifTrue;
-                    } else if (ifStmt.ifFalse != null) {
-                        // There's an else statement
-                        branchStack.add(branchPos);
-                        branchPos = 0;
-                        tree = ifStmt.ifFalse;
+                    } else {
+                        boolean foundElseIf = false;
+                        int branchCount = ifStmt.otherOptions.size();
+                        for (int i = 0; i < branchCount; i++) {
+                            IfStatement.ConditionStatementListPair<E> branch = ifStmt.otherOptions.get(i);
+                            if (branch.condition.getAsBoolean()) {
+                                branchStack.add(branchPos);
+                                branchPos = 0;
+                                tree = branch.children;
+                                // Goto would probable be more readable here, but Java doesn't have it
+                                foundElseIf = true;
+                                // goto foundElseIf;
+                                break;
+                            }
+                        }
+                        if (!foundElseIf && ifStmt.ifFalse != null) {
+                            // There's an else statement
+                            branchStack.add(branchPos);
+                            branchPos = 0;
+                            tree = ifStmt.ifFalse;
+                        }
+                        // foundElseIf:
                     }
                 }
             }
