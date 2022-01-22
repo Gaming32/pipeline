@@ -20,6 +20,7 @@ public interface IteratorBuilder<E> extends Iterable<E> {
     public IteratorBuilder<E> for_(Runnable initializer, BooleanSupplier condition, Runnable increment);
     public <T> IteratorBuilder<E> forEach(Consumer<T> action, Iterable<T> iterator);
     public IteratorBuilder<E> while_(BooleanSupplier condition);
+    public IteratorBuilder<E> if_(BooleanSupplier condition);
     public IteratorBuilder<E> yield(Supplier<E> result);
     public IteratorBuilder<E> end();
 

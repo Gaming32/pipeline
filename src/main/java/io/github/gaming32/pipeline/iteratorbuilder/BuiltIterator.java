@@ -89,9 +89,23 @@ class BuiltIterator<E> implements Iterator<E> {
                     }
                 } else if (stmt instanceof WhileStatement) {
                     WhileStatement<E> whileStmt = (WhileStatement<E>)stmt;
-                    branchStack.add(branchPos);
-                    branchPos = 0;
-                    tree = whileStmt.children;
+                    if (whileStmt.condition.getAsBoolean()) {
+                        branchStack.add(branchPos);
+                        branchPos = 0;
+                        tree = whileStmt.children;
+                    }
+                } else if (stmt instanceof IfStatement) {
+                    IfStatement<E> ifStmt = (IfStatement<E>)stmt;
+                    if (ifStmt.condition.getAsBoolean()) {
+                        branchStack.add(branchPos);
+                        branchPos = 0;
+                        tree = ifStmt.ifTrue;
+                    } else if (ifStmt.ifFalse != null) {
+                        // There's an if statement
+                        branchStack.add(branchPos);
+                        branchPos = 0;
+                        tree = ifStmt.ifFalse;
+                    }
                 }
             }
             Statement<E> parentStatement;

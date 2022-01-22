@@ -10,12 +10,14 @@ public class IteratorBuilderTest implements Iterable<String> {
     @Override
     public Iterator<String> iterator() {
         class State {
-            int i;
+            int i = -1;
         }
         State state = new State();
         return IteratorBuilder.<String>create()
             .while_(() -> state.i < 5)
-                .yield(() -> Integer.toString(state.i++))
+                .if_(() -> ++state.i != 2)
+                    .yield(() -> Integer.toString(state.i))
+                .end()
             .end()
         .end().iterator();
         // return IteratorBuilder.<String>create()
