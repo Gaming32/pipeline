@@ -1,0 +1,78 @@
+@options
+@packages
+@argfile
+-encoding
+'UTF-8'
+-protected
+-source
+'1.8'
+-sourcepath
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java;C:/Users/josia/OneDrive/Documents/pipeline/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2022. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'C:/Users/josia/OneDrive/Documents/pipeline/target/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Pipeline 1.0-SNAPSHOT API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' 'C:/Users/josia/OneDrive/Documents/pipeline/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Pipeline 1.0-SNAPSHOT API'
+io.github.gaming32.pipeline.calling
+io.github.gaming32.pipeline.iterator
+io.github.gaming32.pipeline.iterator.iterators
+io.github.gaming32.pipeline.iteratorbuilder
+io.github.gaming32.pipeline
+io.github.gaming32.pipeline.unary
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/calling/CallingPipeline.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/calling/StandardCallingPipeline.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/IteratorPipeline.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/ArrayIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/FilteringIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/FlatMappingIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/LimitIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/MappingIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/MultiIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/PeekingIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/SizeEstimateIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/iterators/SkipIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iterator/StandardIteratorPipeline.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/BuiltIterator.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/ForEachStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/ForStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/IfStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/IteratorBuilder.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/RunStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/Statement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/StatementList.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/WhileStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/iteratorbuilder/YieldStatement.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/Pipelines.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/unary/StandardUnaryPipeline.java'
+'C:/Users/josia/OneDrive/Documents/pipeline/src/main/java/io/github/gaming32/pipeline/unary/UnaryPipeline.java'
+C:\Users\josia\OneDrive\Documents\pipeline\src\main\java = 1641643267070
+C:\Users\josia\OneDrive\Documents\pipeline\target\generated-sources\annotations = 1642940025234
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\allclasses-index.html = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\allpackages-index.html = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\element-list = 1642940032790
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\help-doc.html = 1642940032963
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\index-all.html = 1642940032963
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\index.html = 1642940032932
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\jquery-ui.overrides.css = 1642940033205
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\member-search-index.js = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\module-search-index.js = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\overview-summary.html = 1642940032963
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\overview-tree.html = 1642940032916
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\package-search-index.js = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\script.js = 1642940032989
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\search.js = 1642940033021
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\stylesheet.css = 1642940032989
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\tag-search-index.js = 1642940032948
+C:\Users\josia\OneDrive\Documents\pipeline\target\apidocs\type-search-index.js = 1642940032948
