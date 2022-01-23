@@ -9,6 +9,8 @@
   <version>1.0-beta-1</version>
 
   <name>Pipeline</name>
+  <description>Library for performing fluent-style operations on Java objects.
+    It also provides a fluent format for creating generators.</description>
   <url>https://github.com/Gaming32/Pipeline</url>
 
   <properties>
@@ -25,6 +27,52 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <id>Gaming32</id>
+      <name>Josiah Glosson</name>
+      <url>https://github.com/Gaming32</url>
+      <email>gaming32i64@gmail.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/Gaming32/Pipeline.git</connection>
+    <developerConnection>scm:git:ssh://github.com:Gaming32/Pipeline.git</developerConnection>
+    <url>http://github.com/Gaming32/Pipeline/tree/main</url>
+  </scm>
+
+  <profiles>
+    <profile>
+      <id>sign</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
