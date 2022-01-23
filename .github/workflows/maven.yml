@@ -25,5 +25,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ matrix.java == 8 && matrix.os == 'ubuntu-latest' }}
         with:
-          name: pipeline-jar-artifact
+          name: pipeline-dist-artifact
           path: target/pipeline-*.jar
