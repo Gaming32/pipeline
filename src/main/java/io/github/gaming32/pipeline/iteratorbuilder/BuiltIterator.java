@@ -52,6 +52,7 @@ class BuiltIterator<E> implements Iterator<E> {
         return (T)valueStack.remove(valueStack.size() - 1);
     }
 
+    @SuppressWarnings("unused")
     private int branchStackPeek() {
         return branchStack.get(branchStack.size() - 1);
     }
@@ -77,7 +78,6 @@ class BuiltIterator<E> implements Iterator<E> {
                     tree = forStmt.children;
                     forStmt.initializer.run();
                 } else if (stmt instanceof ForEachStatement) {
-                    @SuppressWarnings("unchecked")
                     ForEachStatement<E,?> forEachStmt = (ForEachStatement<E,?>)stmt;
                     Iterator<?> iterator = forEachStmt.iterator.iterator();
                     if (iterator.hasNext()) {
@@ -138,7 +138,6 @@ class BuiltIterator<E> implements Iterator<E> {
                         tree = tree.parent;
                     }
                 } else if (parentStatement instanceof ForEachStatement) {
-                    @SuppressWarnings("unchecked")
                     ForEachStatement<E,?> forEachStmt = (ForEachStatement<E,?>)parentStatement;
                     Iterator<?> iterator = valueStackPeek();
                     if (iterator.hasNext()) {

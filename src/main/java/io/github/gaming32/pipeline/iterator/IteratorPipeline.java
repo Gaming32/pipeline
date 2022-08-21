@@ -2,6 +2,7 @@ package io.github.gaming32.pipeline.iterator;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -75,4 +76,26 @@ public interface IteratorPipeline<E> extends Iterable<E> {
     default public E[] toArray() {
         return toArray(Math.max(estimateSize(), 0));
     }
+
+    /**
+     * @return Returns {@code true} if any element is available
+     */
+    public boolean hasAny();
+
+    /**
+     * @return An a non-empty {@link Optional} if any element is available, an empty {@link Optional} otherwise
+     * @throws NullPointerException If the first element is {@code null}
+     */
+    public Optional<E> findFirst();
+
+    /**
+     * Calls the action {@code action} on the first element in pipeline pipeline, if any
+     */
+    public void firstIfPresent(Consumer<E> action);
+
+    /**
+     * @return A {@link UnaryPipeline} on the first element in this pipeline
+     * @throws NoSuchElementException If no element is available
+     */
+    public UnaryPipeline<E> first();
 }

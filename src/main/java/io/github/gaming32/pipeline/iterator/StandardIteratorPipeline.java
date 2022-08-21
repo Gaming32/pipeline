@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -147,6 +148,28 @@ class StandardIteratorPipeline<E> implements IteratorPipeline<E> {
         List<E> result = new ArrayList<>(sizeEstimate);
         forEach(result::add);
         return (E[])result.toArray();
+    }
+
+    @Override
+    public boolean hasAny() {
+        return next.hasNext();
+    }
+
+    @Override
+    public Optional<E> findFirst() {
+        return next.hasNext() ? Optional.of(next.next()) : Optional.empty();
+    }
+
+    @Override
+    public void firstIfPresent(Consumer<E> action) {
+        if (next.hasNext()) {
+            action.accept(next.next());
+        }
+    }
+
+    @Override
+    public UnaryPipeline<E> first() {
+        return UnaryPipeline.of(next.next());
     }
 
     @Override
