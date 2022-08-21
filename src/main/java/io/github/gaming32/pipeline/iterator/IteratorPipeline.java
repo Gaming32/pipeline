@@ -95,7 +95,7 @@ public interface IteratorPipeline<E> extends Iterable<E> {
 
     /**
      * @return A {@link UnaryPipeline} on the first element in this pipeline
-     * @throws NoSuchElementException If no element is available
+     * @throws java.util.NoSuchElementException If no element is available
      */
     public UnaryPipeline<E> first();
 }
